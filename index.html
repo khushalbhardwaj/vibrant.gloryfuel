@@ -1,0 +1,319 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GloryFuel | Explore Batches</title>
+    <link rel="icon" href="logo.jpg" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="config.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #03040a; color: #d6d3d1; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        .bg-dots { background-image: radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px); background-size: 30px 30px; }
+        .glass-panel { background: rgba(20, 20, 25, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-item { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .animate-gradient-text { background-size: 200% auto; animation: gradientShift 4s linear infinite; }
+        .glow-blue { filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.4)); }
+        .glow-red { filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.4)); }
+        .scroll-blur { opacity: 0; filter: blur(12px); transform: translateY(40px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .scroll-blur.in-view { opacity: 1; filter: blur(0px); transform: translateY(0); }
+        .hover-card { background: rgba(28, 25, 30, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .hover-card:hover { transform: translateY(-8px); border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 15px 35px -10px rgba(59, 130, 246, 0.2); background: rgba(20, 25, 35, 0.8); }
+        .btn-click-effect:active { transform: scale(0.96); }
+        .input-glow:focus { box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); border-color: rgba(59, 130, 246, 0.5); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+        .skeleton { background: #1c1917; background-image: linear-gradient(90deg, #1c1917 0px, #292524 40px, #1c1917 80px); background-size: 1000px 100%; animation: shimmer 2s infinite linear; }
+        .pb-safe { padding-bottom: calc(85px + env(safe-area-inset-bottom)); }
+        .nav-active-wishlist { background-color: #ef4444 !important; color: white !important; border-color: #f87171 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4) !important; }
+    </style>
+</head>
+<body class="min-h-screen selection:bg-blue-500/30 relative flex flex-col overflow-x-hidden pb-safe md:pb-0">
+
+    <div class="fixed inset-0 pointer-events-none bg-dots opacity-30 z-[-1]"></div>
+    <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[150px] pointer-events-none z-[-1]"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[150px] pointer-events-none z-[-1]"></div>
+
+    <nav class="fixed top-0 w-full z-50 bg-[#03040a]/80 backdrop-blur-xl border-b border-blue-500/10 h-[70px] sm:h-20 transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer btn-click-effect transition-transform relative z-50" onclick="window.scrollTo(0,0)">
+                <img src="logo.jpg" alt="GloryFuel Logo" class="h-9 sm:h-11 w-auto drop-shadow-[0_0_10px_rgba(59,130,246,0.4)] rounded-full border border-blue-500/20" />
+                <span class="text-xl sm:text-2xl font-black tracking-tighter text-white">GLORY<span class="text-blue-500">FUEL</span></span>
+            </div>
+            <div class="items-center gap-2 lg:gap-3 bg-stone-900/50 p-1.5 rounded-2xl border border-white/5 shadow-inner hidden md:flex">
+                <button onclick="window.location.href='index.html'" class="px-3 lg:px-4 py-2 rounded-xl text-[10px] lg:text-xs font-bold transition-all btn-click-effect text-white bg-blue-600 flex items-center gap-1.5 lg:gap-2 uppercase tracking-widest shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                    <i data-lucide="layout-grid" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i> Batches
+                </button>
+                <button id="desktop-wishlist-btn" onclick="window.toggleWishlistView()" class="px-3 lg:px-4 py-2 rounded-xl text-[10px] lg:text-xs font-bold transition-all btn-click-effect text-stone-400 hover:text-white hover:bg-stone-800 flex items-center gap-1.5 lg:gap-2 uppercase tracking-widest border border-transparent">
+                    <i data-lucide="heart" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i> Wishlist
+                </button>
+                <button onclick="window.location.href='about.html'" class="px-3 lg:px-4 py-2 rounded-xl text-[10px] lg:text-xs font-bold transition-all btn-click-effect text-stone-400 hover:text-white hover:bg-stone-800 flex items-center gap-1.5 lg:gap-2 uppercase tracking-widest">
+                    <i data-lucide="user" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i> About
+                </button>
+                <button onclick="window.location.href='contact.html'" class="px-3 lg:px-4 py-2 rounded-xl text-[10px] lg:text-xs font-bold transition-all btn-click-effect text-stone-400 hover:text-white hover:bg-stone-800 flex items-center gap-1.5 lg:gap-2 uppercase tracking-widest">
+                    <i data-lucide="headset" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i> Support
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 pt-28 sm:pt-36 pb-10 sm:pb-20 px-4 sm:px-6 flex flex-col items-center max-w-[90rem] mx-auto w-full">
+
+        <div id="hero-section" class="text-center mb-10 sm:mb-16 w-full animate-item" style="animation-delay: 0ms;">
+            <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full text-blue-400 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] mb-4 sm:mb-6 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> 2026-2027 Sessions
+            </div>
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight leading-tight flex items-center justify-center gap-2 flex-wrap">
+                <span>Explore</span>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-blue-400 animate-gradient-text inline-block glow-blue drop-shadow-lg">Premium Batches</span>
+            </h1>
+            <p class="text-stone-400 font-medium text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4 mt-2">Unlock top-tier educational content, live classes, and high-quality study materials designed exclusively for your success.</p>
+        </div>
+
+        <div id="wishlist-header" class="hidden text-center mb-10 sm:mb-16 w-full animate-item" style="animation-delay: 0ms;">
+            <div class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 px-4 py-1.5 rounded-full text-red-500 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] mb-4 sm:mb-6 shadow-[0_0_15px_rgba(239,68,68,0.15)]">
+                <i data-lucide="heart" class="w-3.5 h-3.5 fill-red-500"></i> My Favorites
+            </div>
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight leading-tight flex items-center justify-center gap-2 flex-wrap">
+                <span>Your</span>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-rose-400 to-red-400 animate-gradient-text inline-block glow-red">Wishlist</span>
+            </h1>
+            <p class="text-stone-400 font-medium text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4">Quickly access all the batches you've saved for later.</p>
+        </div>
+
+        <div class="w-full max-w-3xl mx-auto mb-8 sm:mb-12 animate-item relative z-10" style="animation-delay: 100ms;">
+            <div class="relative group">
+                <div class="absolute inset-0 bg-blue-500/10 rounded-2xl blur-xl group-hover:bg-blue-500/20 transition-all duration-500 opacity-50"></div>
+                <div class="relative bg-stone-900/80 backdrop-blur-xl border border-stone-700 rounded-2xl flex items-center p-2 shadow-xl transition-colors group-hover:border-blue-500/50" id="search-container-inner">
+                    <i data-lucide="search" class="w-5 h-5 text-stone-400 ml-3 shrink-0 group-focus-within:text-blue-400 transition-colors"></i>
+                    <input type="text" id="search-input" onkeyup="filterBatches(this.value)" placeholder="Search for a batch (e.g. JEE, Class 11)..." class="w-full bg-transparent text-white px-4 py-2.5 sm:py-3 focus:outline-none text-xs sm:text-sm font-medium placeholder:text-stone-500">
+                </div>
+            </div>
+        </div>
+
+        <div id="skeleton-area" class="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 relative">
+            <div class="glass-panel rounded-2xl overflow-hidden border border-stone-800/50 flex flex-col p-3">
+                <div class="w-full aspect-[16/9] skeleton rounded-xl mb-4"></div>
+                <div class="h-5 skeleton rounded-md w-3/4 mb-2"></div><div class="h-4 skeleton rounded-md w-1/2 mb-6"></div>
+                <div class="flex justify-between items-end mt-auto pt-3">
+                    <div class="flex flex-col gap-1.5"><div class="w-8 h-2 skeleton rounded-md"></div><div class="w-12 h-4 skeleton rounded-md"></div></div>
+                    <div class="w-24 h-9 skeleton rounded-xl"></div>
+                </div>
+            </div>
+            <div class="glass-panel rounded-2xl overflow-hidden border border-stone-800/50 flex flex-col p-3 hidden sm:flex">
+                <div class="w-full aspect-[16/9] skeleton rounded-xl mb-4"></div>
+                <div class="h-5 skeleton rounded-md w-3/4 mb-2"></div><div class="h-4 skeleton rounded-md w-1/2 mb-6"></div>
+                <div class="flex justify-between items-end mt-auto pt-3">
+                    <div class="flex flex-col gap-1.5"><div class="w-8 h-2 skeleton rounded-md"></div><div class="w-12 h-4 skeleton rounded-md"></div></div>
+                    <div class="w-24 h-9 skeleton rounded-xl"></div>
+                </div>
+            </div>
+            <div class="glass-panel rounded-2xl overflow-hidden border border-stone-800/50 flex flex-col p-3 hidden lg:flex">
+                <div class="w-full aspect-[16/9] skeleton rounded-xl mb-4"></div>
+                <div class="h-5 skeleton rounded-md w-3/4 mb-2"></div><div class="h-4 skeleton rounded-md w-1/2 mb-6"></div>
+                <div class="flex justify-between items-end mt-auto pt-3">
+                    <div class="flex flex-col gap-1.5"><div class="w-8 h-2 skeleton rounded-md"></div><div class="w-12 h-4 skeleton rounded-md"></div></div>
+                    <div class="w-24 h-9 skeleton rounded-xl"></div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 relative" id="batches-container"></div>
+
+        <div id="empty-state" class="hidden flex-col items-center justify-center py-20 w-full animate-item">
+            <div class="w-20 h-20 bg-stone-900 border border-stone-800 rounded-full flex items-center justify-center mb-5 shadow-inner">
+                <i data-lucide="search-x" class="w-10 h-10 text-stone-500 opacity-50"></i>
+            </div>
+            <h3 class="text-white font-bold text-lg mb-2" id="empty-state-title">No batches found</h3>
+            <p class="text-stone-500 text-xs text-center max-w-sm" id="empty-state-desc">We couldn't find any batches matching your search. Try a different keyword.</p>
+        </div>
+
+    </main>
+
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-[#03040a]/95 backdrop-blur-xl border-t border-stone-800 z-50 flex justify-between items-center px-2 py-3 pb-[calc(12px+env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] overflow-x-auto no-scrollbar">
+        <button onclick="window.location.href='index.html'" id="mob-nav-home" class="flex flex-col items-center gap-1.5 text-blue-500 w-[25%] btn-click-effect shrink-0 transition-colors">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            <span class="text-[8px] font-black uppercase tracking-wider">Batches</span>
+        </button>
+        <button id="mob-nav-wishlist" onclick="window.toggleWishlistView()" class="flex flex-col items-center gap-1.5 text-stone-500 hover:text-red-400 transition-colors w-[25%] btn-click-effect shrink-0">
+            <i data-lucide="heart" class="w-5 h-5"></i>
+            <span class="text-[8px] font-bold uppercase tracking-wider">Wishlist</span>
+        </button>
+        <button onclick="window.location.href='about.html'" class="flex flex-col items-center gap-1.5 text-stone-500 hover:text-blue-400 transition-colors w-[25%] btn-click-effect shrink-0">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span class="text-[8px] font-bold uppercase tracking-wider">About</span>
+        </button>
+        <button onclick="window.location.href='contact.html'" class="flex flex-col items-center gap-1.5 text-stone-500 hover:text-blue-400 transition-colors w-[25%] btn-click-effect shrink-0">
+            <i data-lucide="headset" class="w-5 h-5"></i>
+            <span class="text-[8px] font-bold uppercase tracking-wider">Support</span>
+        </button>
+    </div>
+
+    <footer class="border-t border-stone-800/50 bg-stone-950/80 py-10 text-center mt-auto backdrop-blur-md relative z-10 hidden md:block">
+        <div class="flex items-center justify-center gap-2 mb-4 opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
+            <i data-lucide="zap" class="w-4 h-4 text-blue-500"></i>
+        </div>
+        <p class="text-stone-500 text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em]">Designed & Developed by GloryFuel Team</p>
+        <p class="text-stone-600 text-[8px] sm:text-[9px] uppercase font-bold tracking-[0.2em] mt-2">© 2026 GloryFuel</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const API = typeof GLORYFUEL_API !== 'undefined' ? GLORYFUEL_API : "";
+        const FALLBACK = [
+            { batch_id: "8", batch_name: "JEE 2028: 11th Class OG KOTA BATCH", thumbnail: "https://appx-content-v2.classx.co.in/paid_course3/2026-04-02-0_8367698380827815.jpeg", exam: "OG Kota" },
+            { batch_id: "35", batch_name: "JEE 2028: 11th Class P2 Batch", thumbnail: "https://appx-content-v2.classx.co.in/paid_course3/2026-04-03-0_6623415739911712.jpeg", exam: "OG Kota" },
+        ];
+        let batches = [];
+        let wishlist = JSON.parse(localStorage.getItem('gloryfuel_wishlist') || '[]');
+        let showingWishlistOnly = false;
+
+        // Try API through proxy, fall back after 3s
+        let apiDone = false;
+        fetch(API + '/api/v1/vibrant/batches').then(r => r.json()).then(d => {
+            if (d.success && d.batches && d.batches.length > 0) {
+                batches = d.batches.map(b => ({ batch_id: b.batch_id, batch_name: b.batch_name, thumbnail: b.thumbnail || FALLBACK.find(f => f.batch_id === b.batch_id)?.thumbnail || '', exam: b.exam, validity: b.validity }));
+                apiDone = true;
+            }
+        }).catch(() => {}).finally(() => {
+            if (!apiDone) batches = FALLBACK;
+            document.getElementById('skeleton-area').classList.add('hidden');
+            renderBatches(batches);
+        });
+
+        const scrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('in-view'); observer.unobserve(entry.target); }
+            });
+        }, { threshold: 0.05, rootMargin: '50px' });
+
+        window.toggleWishlist = function(btn, batchId) {
+            batchId = String(batchId);
+            const svgIcon = btn.querySelector('svg');
+            const index = wishlist.indexOf(batchId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                if (svgIcon) { svgIcon.classList.remove('fill-red-500', 'text-red-500'); svgIcon.classList.add('text-stone-400'); }
+                if (showingWishlistOnly) { renderBatches(batches.filter(b => wishlist.includes(String(b.batch_id)))); }
+            } else {
+                wishlist.push(batchId);
+                if (svgIcon) { svgIcon.classList.add('fill-red-500', 'text-red-500'); svgIcon.classList.remove('text-stone-400'); }
+            }
+            localStorage.setItem('gloryfuel_wishlist', JSON.stringify(wishlist));
+        };
+
+        window.toggleWishlistView = function() {
+            showingWishlistOnly = !showingWishlistOnly;
+            const searchInput = document.getElementById('search-input');
+            const dskWishBtn = document.getElementById('desktop-wishlist-btn');
+            const mobWishBtn = document.getElementById('mob-nav-wishlist');
+            const mobHomeBtn = document.getElementById('mob-nav-home');
+            document.getElementById('hero-section').style.display = showingWishlistOnly ? 'none' : 'block';
+            document.getElementById('wishlist-header').style.display = showingWishlistOnly ? 'block' : 'none';
+            searchInput.placeholder = showingWishlistOnly ? "Search in your wishlist..." : "Search for a batch (e.g. JEE, Class 11)...";
+            if (showingWishlistOnly) {
+                dskWishBtn.classList.add('nav-active-wishlist');
+                dskWishBtn.classList.remove('bg-transparent', 'text-stone-400', 'hover:bg-stone-800');
+                mobWishBtn.classList.add('text-red-500'); mobWishBtn.classList.remove('text-stone-500');
+                mobHomeBtn.classList.remove('text-blue-500'); mobHomeBtn.classList.add('text-stone-500');
+                renderBatches(batches.filter(b => wishlist.includes(String(b.batch_id))));
+            } else {
+                dskWishBtn.classList.remove('nav-active-wishlist');
+                dskWishBtn.classList.add('bg-transparent', 'text-stone-400', 'hover:bg-stone-800');
+                mobWishBtn.classList.remove('text-red-500'); mobWishBtn.classList.add('text-stone-500');
+                mobHomeBtn.classList.add('text-blue-500'); mobHomeBtn.classList.remove('text-stone-500');
+                renderBatches(batches);
+            }
+            searchInput.value = '';
+        };
+
+        function renderBatches(batchesToRender) {
+            const container = document.getElementById('batches-container');
+            const emptyState = document.getElementById('empty-state');
+            const emptyStateTitle = document.getElementById('empty-state-title');
+            const emptyStateDesc = document.getElementById('empty-state-desc');
+
+            if (batchesToRender.length === 0) {
+                container.innerHTML = '';
+                if (showingWishlistOnly && document.getElementById('search-input').value.trim() === '') {
+                    emptyStateTitle.innerText = "Wishlist is Empty";
+                    emptyStateDesc.innerText = "You haven't saved any batches yet. Click the heart icon on any batch to add it here.";
+                } else {
+                    emptyStateTitle.innerText = "No batches found";
+                    emptyStateDesc.innerText = "We couldn't find any batches matching your search. Try a different keyword.";
+                }
+                emptyState.style.display = 'flex';
+                return;
+            }
+            emptyState.style.display = 'none';
+            container.innerHTML = '';
+
+            const fallbackThumb = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80";
+
+            batchesToRender.forEach((batch, index) => {
+                const safeTitle = String(batch.batch_name).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                const inWishlist = wishlist.includes(String(batch.batch_id));
+                const heartClass = inWishlist ? 'fill-red-500 text-red-500' : 'text-stone-400';
+
+                const html = `
+                <div class="scroll-blur hover-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group relative transition-transform shadow-md" onclick="window.location.href='batch.html?id=${batch.batch_id}&title=${encodeURIComponent(batch.batch_name)}'">
+                    <div class="relative aspect-[16/9] w-full overflow-hidden bg-black p-1 sm:p-1.5 pb-0">
+                        <img src="${batch.thumbnail || fallbackThumb}" alt="Batch Image" class="w-full h-full object-cover rounded-t-xl sm:rounded-t-[14px] group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" onerror="this.src='${fallbackThumb}'" />
+                        <button class="absolute top-3 right-3 bg-black/60 backdrop-blur-md p-2 sm:p-2.5 rounded-full border border-white/10 flex items-center justify-center hover:border-red-500/50 transition-all z-20 btn-click-effect shadow-lg" onclick="event.stopPropagation(); window.toggleWishlist(this, '${batch.batch_id}')">
+                            <i data-lucide="heart" class="w-4 h-4 sm:w-[18px] sm:h-[18px] transition-colors ${heartClass}"></i>
+                        </button>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[2px] pointer-events-none">
+                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-[0_0_20px_rgba(37,99,235,0.5)] transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                                <i data-lucide="play" class="w-5 h-5 ml-1 fill-current"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 sm:p-5 flex flex-col flex-1 border-t border-stone-800/30">
+                        <h3 class="text-sm sm:text-base font-bold text-stone-200 group-hover:text-white mb-2 line-clamp-2 leading-snug transition-colors">${safeTitle}</h3>
+                        <div class="mt-auto pt-4 flex items-end justify-between">
+                            <div class="flex flex-col">
+                                <span class="text-[9px] text-stone-500 font-bold uppercase tracking-widest mb-0.5">Price</span>
+                                <span class="text-sm font-black text-blue-500 uppercase tracking-wider">Free</span>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-blue-500 transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(37,99,235,0.3)] btn-click-effect">
+                                Let's Study <i data-lucide="arrow-right" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+
+            lucide.createIcons({ root: container });
+
+            document.querySelectorAll('.scroll-blur').forEach((el, index) => {
+                if (index < 8) {
+                    setTimeout(() => { el.classList.add('in-view'); }, index * 50);
+                } else {
+                    scrollObserver.observe(el);
+                }
+            });
+        }
+
+        window.filterBatches = function(query) {
+            const lowerQuery = query.toLowerCase().trim();
+            let baseBatches = showingWishlistOnly ? batches.filter(b => wishlist.includes(String(b.batch_id))) : batches;
+            if (lowerQuery === '') { renderBatches(baseBatches); return; }
+            const searchTerms = lowerQuery.split(/\s+/);
+            const filtered = baseBatches.filter(batch => {
+                const title = (batch.batch_name || '').toLowerCase();
+                return searchTerms.every(term => title.includes(term));
+            });
+            renderBatches(filtered);
+        };
+    </script>
+</body>
+</html>
