@@ -32,6 +32,23 @@ function cachePath(key) {
     return path.join(CACHE_DIR, safe + '.json');
 }
 
+const FALLBACKS = {
+    '/api/v1/vibrant/batches': { success: true, total: 2, batches: [
+        { batch_id: '8', batch_name: 'JEE 2028: 11th Class OG KOTA BATCH', thumbnail: '', exam: 'OG Kota', validity: '2028-05-31', folder_wise_course: 1 },
+        { batch_id: '35', batch_name: 'JEE 2028: 11th Class P2 Batch', thumbnail: '', exam: 'OG Kota', validity: '2028-05-31', folder_wise_course: 1 },
+    ], source: 'fallback' },
+};
+
+function getStale(key) {
+    const cp = cachePath(key);
+    try {
+        const raw = fs.readFileSync(cp, 'utf-8');
+        const entry = JSON.parse(raw);
+        return entry.data;
+    } catch (e) {}
+    return null;
+}
+
 function getCached(key) {
     if (apiCache[key] && Date.now() - apiCache[key].ts < CACHE_TTL) return apiCache[key].data;
     const cp = cachePath(key);
@@ -255,12 +272,22 @@ const server = http.createServer((req, res) => {
                     res.end(JSON.stringify(data));
                 } else if (upstreamRes.statusCode === 429) {
                     if (!pendingFetches[apiPath]) backgroundFetch(apiPath, opts);
-                    res.writeHead(200, {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'X-Cache': 'RATE_LIMITED',
-                    });
-                    res.end(JSON.stringify({ status: 200, message: 'Upstream rate limited, retrying in background. Please reload shortly.', data: null }));
+                    const stale = getStale(apiPath) || FALLBACKS[apiPath] || null;
+                    if (stale) {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'X-Cache': 'STALE',
+                        });
+                        res.end(JSON.stringify(stale));
+                    } else {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'X-Cache': 'RATE_LIMITED',
+                        });
+                        res.end(JSON.stringify({ status: 200, message: 'Upstream rate limited. Retrying... reload shortly.', data: null }));
+                    }
                 } else {
                     if (!pendingFetches[apiPath]) backgroundFetch(apiPath, opts);
                     res.writeHead(upstreamRes.statusCode || 502, {
