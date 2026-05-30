@@ -1,6 +1,5 @@
-# GloryFuel — Node.js server
-# Deploy to Render: connect this repo, pick "Web Service", start command: node server.js
-# Or Railway: connect repo, it auto-detects Node.js
+// GloryFuel — Node.js proxy server
+// Deploy to Render: connect repo, pick "Web Service", start command: node server.js
 
 const http = require('http');
 const https = require('https');
