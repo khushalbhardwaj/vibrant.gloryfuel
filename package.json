@@ -5,6 +5,7 @@
   "main": "server.js",
   "engines": { "node": ">=18" },
   "scripts": {
+    "build": "true",
     "start": "node server.js"
   }
 }
